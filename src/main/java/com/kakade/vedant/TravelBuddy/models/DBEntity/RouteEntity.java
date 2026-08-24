@@ -6,13 +6,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class RouteEntity {
-    @GeneratedValue(strategy = GenerationType.UUID)
+
+    @Setter(AccessLevel.NONE)
     @Id
     String id;
 
