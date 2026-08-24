@@ -9,7 +9,7 @@ import jakarta.validation.constraints.DecimalMin;
 import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
-public class Location {
+public class LocationEntity {
 
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id

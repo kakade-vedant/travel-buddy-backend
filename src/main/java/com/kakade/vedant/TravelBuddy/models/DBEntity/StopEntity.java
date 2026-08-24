@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Stop {
+public class StopEntity {
 
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id

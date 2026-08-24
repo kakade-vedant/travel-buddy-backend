@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Route {
+public class RouteEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     String id;
