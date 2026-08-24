@@ -1,14 +1,17 @@
-package com.kakade.vedant.TravelBuddy.DBEntity;
+package com.kakade.vedant.TravelBuddy.models.DBEntity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
-public class Stop {
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+public class Route {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     String id;
@@ -16,7 +19,12 @@ public class Stop {
     @NotNull
     String name;
 
-    String locationId;
+    @Nullable
+    String description;
 
-    String url;
+    List<String> stopsId = new ArrayList<>();
+
+    boolean completed = false;
+
+    String routeUrl;
 }

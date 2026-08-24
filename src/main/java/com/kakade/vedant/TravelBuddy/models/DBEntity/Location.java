@@ -1,4 +1,4 @@
-package com.kakade.vedant.TravelBuddy.DBEntity;
+package com.kakade.vedant.TravelBuddy.models.DBEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
