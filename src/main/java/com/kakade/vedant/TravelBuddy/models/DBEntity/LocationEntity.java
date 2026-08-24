@@ -1,5 +1,6 @@
 package com.kakade.vedant.TravelBuddy.models.DBEntity;
 
+import com.kakade.vedant.TravelBuddy.exception.IdModificationException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,4 +30,12 @@ public class LocationEntity {
     @DecimalMin("-180.0")
     @DecimalMax("180.0")
     private double longitude;
+
+    public void setId(String id) throws IdModificationException {
+        if (this.id == null)
+            this.id = id;
+        else
+            throw new IdModificationException();
+    }
+
 }
