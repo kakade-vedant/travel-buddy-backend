@@ -38,7 +38,7 @@ public class LocationService {
         LocationEntity location = findLocation(id);
 
         if (location == null) {
-            throw new ItemNotFoundException();
+            throw new ItemNotFoundException("Location");
         }
 
         return location;
@@ -46,5 +46,22 @@ public class LocationService {
 
     public LocationEntity findLocation(String id) {
         return repository.findById(id).orElse(null);
+    }
+
+    public LocationEntity updateLocation(LocationRequest request) throws ItemNotFoundException {
+        LocationEntity savedLocation = getLocation(request.getId());
+
+        savedLocation.setLatitude(request.getLatitude());
+        savedLocation.setLongitude(request.getLongitude());
+
+        repository.save(savedLocation);
+
+        return savedLocation;
+    }
+
+    public void deleteLocation(String id) throws ItemNotFoundException{
+        LocationEntity savedLocation = getLocation(id);
+
+        repository.deleteById(savedLocation.getId());
     }
 }

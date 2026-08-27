@@ -60,6 +60,8 @@ public class StopService {
         savedStop.setName(request.getName());
         savedStop.setUrl(request.getUrl());
 
+        locationService.updateLocation(request.getLocation());
+
         stopRepository.save(savedStop);
 
         return savedStop;
@@ -68,6 +70,8 @@ public class StopService {
     public void deleteStop(StopRequest request) throws ItemNotFoundException {
         StopEntity savedStop = getStop(request.getId());
 
+        locationService.deleteLocation(request.getLocation().getId());
+        
         stopRepository.deleteById(savedStop.getId());
     }
 }
