@@ -1,7 +1,10 @@
 package com.kakade.vedant.TravelBuddy.models.RequestEntity;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class RouteRequest {
     String id;
 
