@@ -2,10 +2,10 @@ package com.kakade.vedant.TravelBuddy.exception;
 
 public class ItemNotFoundException extends Exception{
     public ItemNotFoundException() {
-        super("Item Not Found.");
+        super("Item not Found.");
     }
 
-    public ItemNotFoundException(String message) {
-        super(message);
+    public ItemNotFoundException(String itemName) {
+        super(itemName + " not Found.");
     }
 }
