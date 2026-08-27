@@ -2,15 +2,13 @@ package com.kakade.vedant.TravelBuddy.models.DBEntity;
 
 import com.kakade.vedant.TravelBuddy.exception.IdModificationException;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Getter
 @Setter

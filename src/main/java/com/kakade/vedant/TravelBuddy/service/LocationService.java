@@ -21,5 +21,9 @@ public class LocationService {
         locationEntity.setId(utilitiesService.generateUUID().toString());
         locationEntity.setLatitude(request.getLatitude());
         locationEntity.setLatitude(request.getLatitude());
+
+        repository.save(locationEntity);
+
+        return locationEntity;
     }
 }
