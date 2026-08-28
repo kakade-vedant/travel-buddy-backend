@@ -25,6 +25,7 @@ public class RouteService {
         RouteEntity routeEntity = new RouteEntity();
 
         routeEntity.setId(requestRoute.getId());
+        routeEntity.setName(requestRoute.getName());
         routeEntity.setDescription(requestRoute.getDescription());
         routeEntity.setRouteUrl(requestRoute.getRouteUrl());
         routeEntity.setCompleted(requestRoute.isCompleted());
@@ -63,5 +64,41 @@ public class RouteService {
         }
 
         return routeEntity;
+    }
+
+    public RouteEntity updateRoute(RouteRequest routeRequest) throws IdModificationException, ItemNotFoundException {
+        RouteEntity routeEntity = getRoute(routeRequest.getId());
+
+        routeEntity.setName(routeRequest.getName());
+        routeEntity.setRouteUrl(routeRequest.getRouteUrl());
+        routeEntity.setDescription(routeRequest.getDescription());
+        routeEntity.setCompleted(routeRequest.isCompleted());
+
+        try {
+            for (StopRequest stop : routeRequest.getStops()) {
+                StopEntity stopEntity = stopService.saveStop(stop);
+
+                routeEntity.getStopsId().add(stopEntity.getId());
+            }
+        } catch (IdModificationException idModificationException) {
+            for (String stop : routeEntity.getStopsId()) {
+                stopService.deleteStop(stop);
+            }
+            throw idModificationException;
+        }
+
+        repository.save(routeEntity);
+
+        return routeEntity;
+    }
+
+    public void deleteRoute(RouteRequest routeRequest) throws ItemNotFoundException {
+        RouteEntity routeEntity = getRoute(routeRequest.getId());
+
+        for (String stopId : routeEntity.getStopsId()) {
+            stopService.deleteStop(stopId);
+        }
+
+        repository.deleteById(routeRequest.getId());
     }
 }
