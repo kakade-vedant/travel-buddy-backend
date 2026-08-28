@@ -25,7 +25,7 @@ public class StopEntity {
     String url;
 
     public void setId(String id) throws IdModificationException{
-        if (id == null) {
+        if (this.id == null) {
             this.id = id;
         } else {
             throw new IdModificationException();

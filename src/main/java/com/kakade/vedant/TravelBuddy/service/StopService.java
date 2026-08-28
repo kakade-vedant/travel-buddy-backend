@@ -67,11 +67,14 @@ public class StopService {
         return savedStop;
     }
 
-    public void deleteStop(StopRequest request) throws ItemNotFoundException {
-        StopEntity savedStop = getStop(request.getId());
 
-        locationService.deleteLocation(request.getLocation().getId());
-        
-        stopRepository.deleteById(savedStop.getId());
+    public void deleteStop(StopEntity stop) throws ItemNotFoundException {
+        locationService.deleteLocation(locationService.getLocation(stop.getLocationId()));
+
+        stopRepository.deleteById(stop.getId());
+    }
+
+    public void deleteStop(String id) throws ItemNotFoundException {
+        deleteStop(getStop(id));
     }
 }

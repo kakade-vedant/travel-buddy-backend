@@ -59,9 +59,13 @@ public class LocationService {
         return savedLocation;
     }
 
+    public void deleteLocation(LocationEntity location) {
+        repository.deleteById(location.getId());
+
+    }
+
     public void deleteLocation(String id) throws ItemNotFoundException{
         LocationEntity savedLocation = getLocation(id);
-
-        repository.deleteById(savedLocation.getId());
+        deleteLocation(savedLocation);
     }
 }
