@@ -3,7 +3,7 @@ package com.kakade.vedant.TravelBuddy.service;
 import com.kakade.vedant.TravelBuddy.exception.IdModificationException;
 import com.kakade.vedant.TravelBuddy.exception.ItemNotFoundException;
 import com.kakade.vedant.TravelBuddy.models.DBEntity.LocationEntity;
-import com.kakade.vedant.TravelBuddy.models.RequestEntity.LocationRequest;
+import com.kakade.vedant.TravelBuddy.models.RequestResponse.Location;
 import com.kakade.vedant.TravelBuddy.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class LocationService {
     @Autowired
     UtilitiesService utilitiesService;
 
-    public LocationEntity saveLocation(LocationRequest request) throws IdModificationException {
+    public LocationEntity saveLocation(Location request) throws IdModificationException {
         LocationEntity locationEntity = new LocationEntity();
 
         locationEntity.setId(utilitiesService.generateUUID().toString());
@@ -48,7 +48,7 @@ public class LocationService {
         return repository.findById(id).orElse(null);
     }
 
-    public LocationEntity updateLocation(LocationRequest request) throws ItemNotFoundException {
+    public LocationEntity updateLocation(Location request) throws ItemNotFoundException {
         LocationEntity savedLocation = getLocation(request.getId());
 
         savedLocation.setLatitude(request.getLatitude());

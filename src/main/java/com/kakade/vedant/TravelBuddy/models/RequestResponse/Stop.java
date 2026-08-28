@@ -1,16 +1,16 @@
-package com.kakade.vedant.TravelBuddy.models.RequestEntity;
+package com.kakade.vedant.TravelBuddy.models.RequestResponse;
 
 import jakarta.annotation.Nullable;
 import lombok.Getter;
 
 @Getter
-public class StopRequest {
+public class Stop {
     @Nullable
     String id;
 
     String name;
 
-    LocationRequest location;
+    Location location;
 
     String url;
 }

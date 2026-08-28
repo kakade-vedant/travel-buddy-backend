@@ -4,7 +4,7 @@ import com.kakade.vedant.TravelBuddy.exception.IdModificationException;
 import com.kakade.vedant.TravelBuddy.exception.ItemNotFoundException;
 import com.kakade.vedant.TravelBuddy.models.DBEntity.LocationEntity;
 import com.kakade.vedant.TravelBuddy.models.DBEntity.StopEntity;
-import com.kakade.vedant.TravelBuddy.models.RequestEntity.StopRequest;
+import com.kakade.vedant.TravelBuddy.models.RequestResponse.Stop;
 import com.kakade.vedant.TravelBuddy.repository.StopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class StopService {
     @Autowired
     UtilitiesService utilitiesService;
 
-    public StopEntity saveStop(StopRequest request) throws IdModificationException {
+    public StopEntity saveStop(Stop request) throws IdModificationException {
         StopEntity stopEntity = new StopEntity();
 
         stopEntity.setId(utilitiesService.generateUUID().toString());
@@ -57,7 +57,7 @@ public class StopService {
         return stopRepository.findById(id).orElse(null);
     }
 
-    public StopEntity updateStop(StopRequest request) throws ItemNotFoundException {
+    public StopEntity updateStop(Stop request) throws ItemNotFoundException {
         StopEntity savedStop = getStop(request.getId());
 
         savedStop.setName(request.getName());

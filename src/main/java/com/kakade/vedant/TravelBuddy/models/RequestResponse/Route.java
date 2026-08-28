@@ -1,4 +1,4 @@
-package com.kakade.vedant.TravelBuddy.models.RequestEntity;
+package com.kakade.vedant.TravelBuddy.models.RequestResponse;
 
 import lombok.Getter;
 
@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class RouteRequest {
+public class Route {
     String id;
 
     String name;
 
     String description;
 
-    List<StopRequest> stops = new ArrayList<>();
+    List<Stop> stops = new ArrayList<>();
 
     boolean completed;
 

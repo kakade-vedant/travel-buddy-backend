@@ -4,8 +4,9 @@ import com.kakade.vedant.TravelBuddy.exception.IdModificationException;
 import com.kakade.vedant.TravelBuddy.exception.ItemNotFoundException;
 import com.kakade.vedant.TravelBuddy.models.DBEntity.RouteEntity;
 import com.kakade.vedant.TravelBuddy.models.DBEntity.StopEntity;
-import com.kakade.vedant.TravelBuddy.models.RequestEntity.RouteRequest;
-import com.kakade.vedant.TravelBuddy.models.RequestEntity.StopRequest;
+import com.kakade.vedant.TravelBuddy.models.MetaData.RouteMetaData;
+import com.kakade.vedant.TravelBuddy.models.RequestResponse.Route;
+import com.kakade.vedant.TravelBuddy.models.RequestResponse.Stop;
 import com.kakade.vedant.TravelBuddy.repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class RouteService {
     @Autowired
     UtilitiesService utilitiesService;
 
-    public RouteEntity createRoute(RouteRequest requestRoute) throws IdModificationException, ItemNotFoundException {
+    public RouteEntity createRoute(Route requestRoute) throws IdModificationException, ItemNotFoundException {
         RouteEntity routeEntity = new RouteEntity();
 
         routeEntity.setId(utilitiesService.generateUUID().toString());
@@ -35,7 +36,7 @@ public class RouteService {
 
         if (!requestRoute.getStops().isEmpty()) {
             try {
-                for (StopRequest stop : requestRoute.getStops()) {
+                for (Stop stop : requestRoute.getStops()) {
                     StopEntity stopEntity = stopService.saveStop(stop);
 
                     routeEntity.getStopsId().add(stopEntity.getId());
@@ -57,6 +58,19 @@ public class RouteService {
         return routeRepository.findAll();
     }
 
+    public List<RouteMetaData> getAllRoutesMetaData() {
+        return getAllRoutes().stream().map(route -> {
+            RouteMetaData metaData = new RouteMetaData();
+
+            metaData.setId(route.getId());
+            metaData.setName(route.getName());
+            metaData.setDescription(route.getDescription());
+            metaData.setCompleted(route.isCompleted());
+
+            return metaData;
+        }).toList();
+    }
+
     public RouteEntity findRoute(String id) {
         return routeRepository.findById(id).orElse(null);
     }
@@ -71,16 +85,16 @@ public class RouteService {
         return routeEntity;
     }
 
-    public RouteEntity updateRoute(RouteRequest routeRequest) throws IdModificationException, ItemNotFoundException {
-        RouteEntity routeEntity = getRoute(routeRequest.getId());
+    public RouteEntity updateRoute(Route route) throws IdModificationException, ItemNotFoundException {
+        RouteEntity routeEntity = getRoute(route.getId());
 
-        routeEntity.setName(routeRequest.getName());
-        routeEntity.setRouteUrl(routeRequest.getRouteUrl());
-        routeEntity.setDescription(routeRequest.getDescription());
-        routeEntity.setCompleted(routeRequest.isCompleted());
+        routeEntity.setName(route.getName());
+        routeEntity.setRouteUrl(route.getRouteUrl());
+        routeEntity.setDescription(route.getDescription());
+        routeEntity.setCompleted(route.isCompleted());
 
         try {
-            for (StopRequest stop : routeRequest.getStops()) {
+            for (Stop stop : route.getStops()) {
                 StopEntity stopEntity = stopService.saveStop(stop);
 
                 routeEntity.getStopsId().add(stopEntity.getId());
@@ -97,14 +111,14 @@ public class RouteService {
         return routeEntity;
     }
 
-    public void deleteRoute(RouteRequest routeRequest) throws ItemNotFoundException {
-        RouteEntity routeEntity = getRoute(routeRequest.getId());
+    public void deleteRoute(Route route) throws ItemNotFoundException {
+        RouteEntity routeEntity = getRoute(route.getId());
 
         for (String stopId : routeEntity.getStopsId()) {
             stopService.deleteStop(stopId);
         }
 
-        routeRepository.deleteById(routeRequest.getId());
+        routeRepository.deleteById(route.getId());
     }
 
     public URI getURI(RouteEntity routeEntity) {

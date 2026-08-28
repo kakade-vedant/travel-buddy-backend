@@ -1,4 +1,4 @@
-package com.kakade.vedant.TravelBuddy.models.RequestEntity;
+package com.kakade.vedant.TravelBuddy.models.RequestResponse;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.DecimalMax;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
 
 @Getter
-public class LocationRequest {
+public class Location {
 
     @Nullable
     private String id;

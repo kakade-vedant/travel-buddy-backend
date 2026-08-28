@@ -3,7 +3,8 @@ package com.kakade.vedant.TravelBuddy.controller;
 import com.kakade.vedant.TravelBuddy.exception.IdModificationException;
 import com.kakade.vedant.TravelBuddy.exception.ItemNotFoundException;
 import com.kakade.vedant.TravelBuddy.models.DBEntity.RouteEntity;
-import com.kakade.vedant.TravelBuddy.models.RequestEntity.RouteRequest;
+import com.kakade.vedant.TravelBuddy.models.MetaData.RouteMetaData;
+import com.kakade.vedant.TravelBuddy.models.RequestResponse.Route;
 import com.kakade.vedant.TravelBuddy.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,9 @@ public class RouteController {
     RouteService routeService;
 
     @PostMapping("create")
-    public ResponseEntity createRoute(@RequestBody RouteRequest routeRequest) {
+    public ResponseEntity createRoute(@RequestBody Route route) {
         try {
-            RouteEntity routeEntity = routeService.createRoute(routeRequest);
+            RouteEntity routeEntity = routeService.createRoute(route);
 
             URI location = routeService.getURI(routeEntity);
 
@@ -44,10 +45,16 @@ public class RouteController {
         }
     }
 
-    @GetMapping()
+    @GetMapping("all")
     public ResponseEntity getAllRoutes() {
         List<RouteEntity> routeEntity = routeService.getAllRoutes();
         return ResponseEntity.ok(routeEntity);
+    }
+
+    @GetMapping("all/meta-data")
+    public ResponseEntity getRouteMetaData() {
+        List<RouteMetaData> metaData = routeService.getAllRoutesMetaData();
+        return ResponseEntity.ok(metaData);
     }
 
 }
