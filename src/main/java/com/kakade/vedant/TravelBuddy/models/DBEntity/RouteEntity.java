@@ -37,8 +37,8 @@ public class RouteEntity {
     public void setId(String id) throws IdModificationException {
         if (this.id == null) {
             this.id = id;
+        } else {
+            throw new IdModificationException();
         }
-
-        throw new IdModificationException();
     }
 }
