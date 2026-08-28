@@ -8,52 +8,57 @@ import com.kakade.vedant.TravelBuddy.models.RequestEntity.RouteRequest;
 import com.kakade.vedant.TravelBuddy.models.RequestEntity.StopRequest;
 import com.kakade.vedant.TravelBuddy.repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.List;
 
 @Service
 public class RouteService {
     @Autowired
-    RouteRepository repository;
+    RouteRepository routeRepository;
 
     @Autowired
     StopService stopService;
 
+    @Autowired
+    UtilitiesService utilitiesService;
+
     public RouteEntity createRoute(RouteRequest requestRoute) throws IdModificationException, ItemNotFoundException {
         RouteEntity routeEntity = new RouteEntity();
 
-        routeEntity.setId(requestRoute.getId());
+        routeEntity.setId(utilitiesService.generateUUID().toString());
         routeEntity.setName(requestRoute.getName());
         routeEntity.setDescription(requestRoute.getDescription());
         routeEntity.setRouteUrl(requestRoute.getRouteUrl());
         routeEntity.setCompleted(requestRoute.isCompleted());
 
-        try {
-            for (StopRequest stop : requestRoute.getStops()) {
-                StopEntity stopEntity = stopService.saveStop(stop);
+        if (!requestRoute.getStops().isEmpty()) {
+            try {
+                for (StopRequest stop : requestRoute.getStops()) {
+                    StopEntity stopEntity = stopService.saveStop(stop);
 
-                routeEntity.getStopsId().add(stopEntity.getId());
+                    routeEntity.getStopsId().add(stopEntity.getId());
+                }
+            } catch (IdModificationException idModificationException) {
+                for (String stop : routeEntity.getStopsId()) {
+                    stopService.deleteStop(stop);
+                }
+                throw idModificationException;
             }
-        } catch (IdModificationException idModificationException) {
-            for (String stop : routeEntity.getStopsId()) {
-                stopService.deleteStop(stop);
-            }
-            throw idModificationException;
         }
 
-        repository.save(routeEntity);
+        routeRepository.save(routeEntity);
 
         return routeEntity;
     }
 
     public List<RouteEntity> getAllRoutes() {
-        return repository.findAll();
+        return routeRepository.findAll();
     }
 
     public RouteEntity findRoute(String id) {
-        return repository.findById(id).orElse(null);
+        return routeRepository.findById(id).orElse(null);
     }
 
     public RouteEntity getRoute(String id) throws ItemNotFoundException {
@@ -87,7 +92,7 @@ public class RouteService {
             throw idModificationException;
         }
 
-        repository.save(routeEntity);
+        routeRepository.save(routeEntity);
 
         return routeEntity;
     }
@@ -99,6 +104,12 @@ public class RouteService {
             stopService.deleteStop(stopId);
         }
 
-        repository.deleteById(routeRequest.getId());
+        routeRepository.deleteById(routeRequest.getId());
+    }
+
+    public URI getURI(RouteEntity routeEntity) {
+        String location = "/route/" + routeEntity;
+
+        return URI.create(location);
     }
 }

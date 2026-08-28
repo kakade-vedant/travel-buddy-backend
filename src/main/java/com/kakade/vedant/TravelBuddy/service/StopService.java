@@ -7,9 +7,11 @@ import com.kakade.vedant.TravelBuddy.models.DBEntity.StopEntity;
 import com.kakade.vedant.TravelBuddy.models.RequestEntity.StopRequest;
 import com.kakade.vedant.TravelBuddy.repository.StopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class StopService {
     @Autowired
     StopRepository stopRepository;
@@ -27,9 +29,10 @@ public class StopService {
         stopEntity.setName(request.getName());
         stopEntity.setUrl(request.getUrl());
 
-        LocationEntity savedLocation = locationService.saveLocation(request.getLocation());
-
-        stopEntity.setLocationId(savedLocation.getId());
+        if (request.getLocation() != null){
+            LocationEntity savedLocation = locationService.saveLocation(request.getLocation());
+            stopEntity.setLocationId(savedLocation.getId());
+        }
 
         stopRepository.save(stopEntity);
 
